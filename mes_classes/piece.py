@@ -14,15 +14,16 @@ class Piece:
 				1 0 0		-->		1 0 0
 				1 1 1	rotation	1 0 0)"""
 
-	def __init__(self, largeur):
+	def __init__(self, largeur, couleur):
 		"""Constructeur définissant les attributs et mettant
 		à 0 la forme de la pièce"""
-		print("Appel au constructeur de Piece avec l'attribut largeur = {}\n".format(largeur))
+		print("\nAppel au constructeur de Piece avec l'attribut largeur = {} et l'attribut couleur = {}\n".format(largeur, couleur))
 
 		try:
 			assert type(largeur) == int and largeur > 0
+			assert couleur == "ROUGE" or couleur == "BLEU"
 		except:
-			print("Erreur : {} n'est pas accepté par le constructeur de Piece\n".format(largeur))
+			print("Erreur : {} ou {} n'est pas accepté par le constructeur de Piece\n".format(largeur, couleur))
 		else:
 			self.largeur = largeur
 			self.x = 0
@@ -31,10 +32,10 @@ class Piece:
 
 	def rotation(self):
 		"""Méthode effectuant une rotation de la pièce dans le sens des aiguilles d'une montre."""
-		print("Rotation dans le sens horaire d'une piece {}\n")
+		print("\nRotation dans le sens horaire d'une piece {}\n")
 
 		self.afficher()
-		print()
+		print("\nRotation\n")
 
 		"""Variable temporaire dans laquelle sera stocké la valeur de chaque élément de la
 		liste pour la permutation."""
@@ -49,12 +50,39 @@ class Piece:
 				self.forme[self.largeur-1 - j][i], tmp = tmp, self.forme[self.largeur-1 - j][i]
 				self.forme[i][j] = tmp
 		
+		"""Cette phase consiste à vérifier qu'une rangée à x = 0 ou y = 0 ne soit pas
+		complètement à 0. Dans ce cas on décale.
+		(exemple :	1 0 0				1 1 1				0 0 0
+					1 0 0		->		1 0 0		->		1 1 1
+					1 1 0	rotation	0 0 0	décalage	1 0 0)"""
+
 		self.afficher()
+		print("\nDécalage\n")
+
+		rangee_x_0 = 0
+		rangee_y_0 = 0
+		for i in range(self.largeur):
+			rangee_x_0 += self.forme[0][i]
+			rangee_y_0 += self.forme[i][0]
+		
+		if rangee_x_0 == 0:
+			for i in range(self.largeur):
+				for j in range(self.largeur-1):
+					self.forme[j][i], self.forme[j+1][i] = self.forme[j+1][i], self.forme[j][i]
+
+		if rangee_y_0 == 0:
+			for i in range(self.largeur):
+				for j in range(self.largeur-1):
+					self.forme[i][j], self.forme[i][j+1] = self.forme[i][j+1], self.forme[i][j]
+
+		self.afficher()
+
 
 	def afficher(self):
 		"""Méthode affichant la piece dans le terminal"""
 
 		for i in range(self.largeur):
 			for j in range(self.largeur):
-				print("{} ".format(self.forme[i][j]), end='')
+				print("{} ".format(self.forme[j][self.largeur-1 - i]), end='')
 			print()
+		print()

@@ -8,7 +8,7 @@ class Plateau:
 	def __init__(self, largeur):
 		"""Constructeur définissant les attributs et mettant
 		à 'vide' toutes les cases du plateau"""
-		print("Appel au constructeur de Plateau avec l'attribut largeur = {}\n".format(largeur))
+		print("\nAppel au constructeur de Plateau avec l'attribut largeur = {}\n".format(largeur))
 		
 		try:
 			assert type(largeur) == int and largeur > 0
