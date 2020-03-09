@@ -19,4 +19,20 @@ class Plateau:
 			self.pieces = []
 			self.cases = [["vide" for j in range(largeur)] for i in range(largeur)]
 
+	
+	def afficher(self):
+		"""Methode affichant le plateau dans le terminal"""
+
+		for i in range(self.largeur):
+			for i in range(self.largeur):
+				print("_______", end='')
+			print()
+			print("|", end='')
+			for j in range(self.largeur):
+				print(" {} ".format(self.cases[j][self.largeur-1 - i]), end='|')
+			print()
+		print()
+
+
+
 		

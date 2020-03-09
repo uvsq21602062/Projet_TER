@@ -1,8 +1,4 @@
-from mes_classes import piece
+from mes_classes import plateau
 
-p = piece.Piece(3, "ROUGE")
-p.forme = [[1, 1, 0], [0, 1, 0], [0, 1, 0]]
-p.rotation()
-p.rotation()
-p.rotation()
-p.rotation()
+p = plateau.Plateau(14)
+p.afficher()
