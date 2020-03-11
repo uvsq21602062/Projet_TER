@@ -35,7 +35,7 @@ class Piece:
 		print("\nRotation dans le sens horaire d'une piece {}\n")
 
 		self.afficher()
-		print("\nRotation\n")
+		print("\n--> Rotation -->\n")
 
 		"""Variable temporaire dans laquelle sera stocké la valeur de chaque élément de la
 		liste pour la permutation."""
@@ -50,26 +50,24 @@ class Piece:
 				self.forme[self.largeur-1 - j][i], tmp = tmp, self.forme[self.largeur-1 - j][i]
 				self.forme[i][j] = tmp
 		
+
 		"""Cette phase consiste à vérifier qu'une rangée à x = 0 ou y = 0 ne soit pas
 		complètement à 0. Dans ce cas on décale.
 		(exemple :	1 0 0				1 1 1				0 0 0
 					1 0 0		->		1 0 0		->		1 1 1
 					1 1 0	rotation	0 0 0	décalage	1 0 0)"""
-
 		self.afficher()
-		print("\nDécalage\n")
+		print("\n--> Décalage -->\n")
 
 		rangee_x_0 = 0
 		rangee_y_0 = 0
 		for i in range(self.largeur):
 			rangee_x_0 += self.forme[0][i]
 			rangee_y_0 += self.forme[i][0]
-		
 		if rangee_x_0 == 0:
 			for i in range(self.largeur):
 				for j in range(self.largeur-1):
 					self.forme[j][i], self.forme[j+1][i] = self.forme[j+1][i], self.forme[j][i]
-
 		if rangee_y_0 == 0:
 			for i in range(self.largeur):
 				for j in range(self.largeur-1):

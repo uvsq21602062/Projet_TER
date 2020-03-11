@@ -24,9 +24,6 @@ class Plateau:
 		"""Methode affichant le plateau dans le terminal"""
 
 		for i in range(self.largeur):
-			for i in range(self.largeur):
-				print("_______", end='')
-			print()
 			print("|", end='')
 			for j in range(self.largeur):
 				print(" {} ".format(self.cases[j][self.largeur-1 - i]), end='|')
