@@ -1,5 +1,5 @@
 class Plateau:
-	"""Classe gerrant les informations du plateau de jeu :
+	"""Classe gerrant les informations du plateau de jeu, elle a comme attribut :
 
 	- sa taille
 	- ses pieces (liste)
