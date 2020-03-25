@@ -53,12 +53,13 @@ class Example(Frame):
 
     def initUI(self):
         
+        self.configure(background='black')
 
         self.pack(fill=BOTH, expand=1)
 
         canvas = Canvas(self)
 
-        self.configure(background='black')
+        
 
 
         for i in range(15):
@@ -107,7 +108,7 @@ class Example(Frame):
         		self.affiche_pieces_rouge(canvas, i, 5, 240)		# done
 
         	if i.id==9:
-        		self.affiche_pieces_rouge(canvas, i, 340, 710)		# done
+        		self.affiche_pieces_rouge(canvas, i, 340, 703)		# done
 
         	if i.id==10:
         		i.rotation()
@@ -199,7 +200,7 @@ class Example(Frame):
         		self.affiche_pieces_bleu(canvas, i, 5, 240)		# done
 
         	if i.id==9:
-        		self.affiche_pieces_bleu(canvas, i, 340, 710)		# done
+        		self.affiche_pieces_bleu(canvas, i, 340, 703)		# done
 
         	if i.id==10:
         		i.rotation()
