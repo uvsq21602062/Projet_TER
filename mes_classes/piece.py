@@ -3,18 +3,18 @@ class Piece:
 
 	- une liste de deux dimmension représentant sa forme
 	(exemple :	1 0 0
-				1 0 0
-				1 1 1) représente une équerre de 3x3
+			1 0 0
+			1 1 1) représente une équerre de 3x3
 	- une largeur (coté le plus long)
 	- une position sur le plateau représenté par x (largeur) et y (hauteur)
 	cette position coorespond à l'indice [0][0] de la liste représentant la forme
 
 	L'orientation de la pièce est modifié en modifiant la forme
 	(exemple :	1 0 0				1 1 1
-				1 0 0		-->		1 0 0
-				1 1 1	rotation	1 0 0)"""
+			1 0 0		-->		1 0 0
+			1 1 1	rotation	        1 0 0)"""
 
-	def __init__(self, largeur, couleur):
+	def __init__(self, largeur, couleur, id):
 		"""Constructeur définissant les attributs et mettant
 		à 0 la forme de la pièce"""
 		print("\nAppel au constructeur de Piece avec l'attribut largeur = {} et l'attribut couleur = {}\n".format(largeur, couleur))
@@ -29,6 +29,7 @@ class Piece:
 			self.x = 0
 			self.y = 0
 			self.forme = [[0 for j in range(largeur)] for i in range(largeur)]
+			self.id=id
 
 	def rotation(self):
 		"""Méthode effectuant une rotation de la pièce dans le sens des aiguilles d'une montre."""
@@ -53,9 +54,9 @@ class Piece:
 
 		"""Cette phase consiste à vérifier qu'une rangée à x = 0 ou y = 0 ne soit pas
 		complètement à 0. Dans ce cas on décale.
-		(exemple :	1 0 0				1 1 1				0 0 0
-					1 0 0		->		1 0 0		->		1 1 1
-					1 1 0	rotation	0 0 0	décalage	1 0 0)"""
+		(exemple :	1 0 0			1 1 1			0 0 0
+				1 0 0		->	1 0 0		->	1 1 1
+				1 1 0	rotation	0 0 0	décalage	1 0 0)"""
 		self.afficher()
 		print("\n--> Décalage -->\n")
 
