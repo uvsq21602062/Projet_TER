@@ -29,6 +29,7 @@ class Piece:
 			self.x = 0
 			self.y = 0
 			self.forme = [[0 for j in range(largeur)] for i in range(largeur)]
+			self.couleur = couleur
 
 	def rotation(self):
 		"""Méthode effectuant une rotation de la pièce dans le sens des aiguilles d'une montre."""
@@ -61,17 +62,18 @@ class Piece:
 
 		rangee_x_0 = 0
 		rangee_y_0 = 0
-		for i in range(self.largeur):
-			rangee_x_0 += self.forme[0][i]
-			rangee_y_0 += self.forme[i][0]
-		if rangee_x_0 == 0:
+		while rangee_x_0 == 0 or rangee_y_0 == 0:
 			for i in range(self.largeur):
-				for j in range(self.largeur-1):
-					self.forme[j][i], self.forme[j+1][i] = self.forme[j+1][i], self.forme[j][i]
-		if rangee_y_0 == 0:
-			for i in range(self.largeur):
-				for j in range(self.largeur-1):
-					self.forme[i][j], self.forme[i][j+1] = self.forme[i][j+1], self.forme[i][j]
+				rangee_x_0 += self.forme[0][i]
+				rangee_y_0 += self.forme[i][0]
+			if rangee_x_0 == 0:
+				for i in range(self.largeur):
+					for j in range(self.largeur-1):
+						self.forme[j][i], self.forme[j+1][i] = self.forme[j+1][i], self.forme[j][i]
+			if rangee_y_0 == 0:
+				for i in range(self.largeur):
+					for j in range(self.largeur-1):
+						self.forme[i][j], self.forme[i][j+1] = self.forme[i][j+1], self.forme[i][j]
 
 		self.afficher()
 
