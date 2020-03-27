@@ -4,9 +4,7 @@ import definition_des_pieces
 
 joueur_rouge = joueur.Joueur(definition_des_pieces.pieces_rouge, "ROUGE")
 joueur_bleu = joueur.Joueur(definition_des_pieces.pieces_bleu, "BLEU")
-
 plateau = plateau.Plateau(14)
-
 
 
 def validation_entree(entree, taille_max):
@@ -16,31 +14,37 @@ def validation_entree(entree, taille_max):
 		res = int(entree)
 	except:
 		if(entree != "q"):
-			print("Le type de la valeur renseignée n'est pas valide")
+			print("\nERREUR ENTREE : Le type de la valeur renseignée n'est pas valide\n")
 		else:
-			print("Au revoir")
+			print("\nAu revoir\n")
 	else:
 		if(res < 0 or res > taille_max):
-			print("La valeur donnée n'est pas dans le bon interval")
+			print("\nERREUR ENTREE : La valeur donnée n'est pas dans le bon interval\n")
 		else:
 			return res
 	return -1
 
-def respect_regle(piece, x, y):
+def respect_regle(piece, x, y, numero_tour):
 	"""Fonction vérifiant que l'action demandé
 	respecte bien les règles et qu'il est possible de la placer."""
 	
 	if plateau.piece_dans_plateau(piece, x, y):
 		if plateau.piece_sur_cases_libres(piece, x, y):
-			return 1
+			if plateau.piece_cote(piece, x, y):
+				if plateau.piece_angle(piece, x, y) or numero_tour == 0:
+					return 1
+				else:
+					print("\nERREUR REGLE : Votre piece ne touche par les angles aucune piece de la meme couleur\n")
+			else:
+				print("\nERREUR REGLE : Votre piece touche par les cotes une autre piece de la même couleur\n")
 		else:
-			print("Les cases concernées par la forme de la pièce ne sont pas libres")
-			return 0
+			print("\nERREUR REGLE : Les cases concernées par la forme de la pièce ne sont pas libres\n")
 	else:
-		print("La piece dépasse du plateau. Veuillez rééssayer")
-		return 0
+		print("\nERREUR REGLE : La piece dépasse du plateau. Veuillez rééssayer\n")
+	
+	return 0
 
-def tour(plateau, joueur):
+def tour(plateau, joueur, numero_tour):
 	"""Fonction permettant de dérouler un tour : 
 		- Demande la pièce à jouer
 		- Demande la position en x
@@ -57,7 +61,7 @@ def tour(plateau, joueur):
 			print("Vous avez demandé cette piece : ")
 			joueur.pieces[indice_piece].afficher()
 			while entree != 'f':
-				print("Pour effectuer une rotation sur la pièce entrez (r) ou (f) pour fermer")
+				print("Pour effectuer une rotation sur la pièce entrez (r).\nEntrez (f) quand vous avez fini.")
 				entree = input()
 				if(entree == 'r'):
 					joueur.pieces[indice_piece].rotation()
@@ -73,7 +77,7 @@ def tour(plateau, joueur):
 						entree = input()
 						y_pos = validation_entree(entree, plateau.largeur-1)
 						if y_pos != -1 and y_pos != 'q':
-							if respect_regle(joueur.pieces[indice_piece], x_pos, y_pos):
+							if respect_regle(joueur.pieces[indice_piece], x_pos, y_pos, numero_tour):
 								plateau.pose_piece(joueur.pieces[indice_piece], x_pos, y_pos)
 								del joueur.pieces[indice_piece]
 								entree = "reussite"
@@ -82,18 +86,21 @@ def tour(plateau, joueur):
 
 	return entree
 
-def jeu(plateau, joueur_rouge, joueur_bleu):
+def jeu():
 	"""Fonction qui déroule toute une partie."""
+	
+	numero_tour = 0;
 	ret = ""
 	while ret != 'q':
 		print("Au joueur rouge de jouer !")
-		ret = tour(plateau, joueur_rouge)
+		ret = tour(plateau, joueur_rouge, numero_tour)
 		plateau.afficher()
 		if  ret != 'q' :
 			print("Au joueur bleu de jouer !")
-			ret = tour(plateau, joueur_bleu)
+			ret = tour(plateau, joueur_bleu, numero_tour)
 			plateau.afficher()
+		numero_tour = numero_tour + 1
 
 
 
-jeu(plateau, joueur_rouge, joueur_bleu)
+jeu()

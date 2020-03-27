@@ -7,7 +7,7 @@ class Plateau:
 
 	def __init__(self, largeur):
 		"""Constructeur définissant les attributs et mettant
-		à 'vide' toutes les cases du plateau"""
+		à 'vide' toutes les cases du plateau."""
 		print("\nAppel au constructeur de Plateau avec l'attribut largeur = {}\n".format(largeur))
 		
 		try:
@@ -34,7 +34,7 @@ class Plateau:
 					self.cases[self.pieces[-1].x + i][self.pieces[-1].y + j] = self.pieces[-1].couleur
 
 	def piece_dans_plateau(self, piece, x, y):
-		"""Méthode permettant de vérifier si une pièce ne dépace pas le plateau"""
+		"""Méthode permettant de vérifier si une pièce ne dépace pas le plateau."""
 
 		if (x+piece.largeur > self.largeur-1) or (y+piece.largeur >self.largeur-1):
 			for i in range(piece.largeur):
@@ -45,7 +45,7 @@ class Plateau:
 
 	def piece_sur_cases_libres(self, piece, x, y):
 		"""Méthode vérifiant que toutes les cases concernées par la forme de la piece
-		soient libre"""
+		soient libre."""
 
 		for i in range(piece.largeur):
 			for j in range(piece.largeur):
@@ -53,9 +53,39 @@ class Plateau:
 					return 0
 		return 1
 
+	def piece_cote(self, piece, x, y):
+		"""Méthode vérifiant qu'aucune des cases d'une pièce ne touche par les cotés
+		une autre piece de la même couleur."""
+
+		for i in range(piece.largeur):
+			for j in range(piece.largeur):
+				if piece.forme[i][j] == 1 and\
+				(self.cases[x+i+1][y+j] == piece.couleur\
+				or self.cases[x+i-1][y+j] == piece.couleur\
+				or self.cases[x+i][y+j+1] == piece.couleur\
+				or self.cases[x+i][y+j-1] == piece.couleur):
+					return 0
+
+		return 1;
+
+	def piece_angle(self, piece, x, y):
+		"""Méthode vérifiant qu'au moins une des cases d'une pièce touche par les angles
+		une autre piece de la même couleur."""
+
+		for i in range(piece.largeur):
+			for j in range(piece.largeur):
+				if piece.forme[i][j] == 1 and\
+				(self.cases[x+i+1][y+j+1] == piece.couleur\
+				or self.cases[x+i-1][y+j+1] == piece.couleur\
+				or self.cases[x+i+1][y+j-1] == piece.couleur\
+				or self.cases[x+i-1][y+j-1] == piece.couleur):
+					return 1
+
+		return 0;
+
 
 	def afficher(self):
-		"""Methode affichant le plateau dans le terminal"""
+		"""Methode affichant le plateau dans le terminal."""
 
 		for i in range(self.largeur):
 			print("|", end='')
