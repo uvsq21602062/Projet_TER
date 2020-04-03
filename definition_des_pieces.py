@@ -63,7 +63,7 @@ pieces_rouge[12].forme = [[0, 0, 1], [0, 1, 1], [1, 1, 0]]	# 12
 pieces_rouge[13].forme = [[0, 1, 1], [0, 1, 0], [1, 1, 0]]	# 13
 pieces_rouge[14].forme = [[0, 1, 1], [1, 1, 0], [0, 1, 0]]	# 14
 pieces_rouge[15].forme = [[0, 1, 0], [1, 1, 1], [0, 1, 0]]	# 15
-pieces_rouge[16].forme = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [1, 1, 1, 1]]	#16  # changer l'ordre
+pieces_rouge[16].forme = [[1, 1, 1, 1], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]	#16  # changer l'ordre
 pieces_rouge[17].forme = [[1, 0, 0, 0], [1, 1, 1, 1], [0, 0, 0, 0], [0, 0, 0, 0]]	#17
 pieces_rouge[18].forme = [[1, 1, 0, 0], [0, 1, 1, 1], [0, 0, 0, 0], [0, 0, 0, 0]]	#18
 pieces_rouge[19].forme = [[1, 1, 1, 1], [0, 0, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0]]	#19
@@ -71,9 +71,9 @@ pieces_rouge[20].forme = [[1, 1, 1, 1, 1], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0,
 
 
 pieces_bleu[0].forme = [[1]]								# 0
-pieces_bleu[1].forme = [[1, 1], [0, 0]]					# 1
-pieces_bleu[2].forme = [[1, 1], [1, 0]]					# 2
-pieces_bleu[3].forme = [[1, 1], [1, 1]]					# 3
+pieces_bleu[1].forme = [[1, 1], [0, 0]]						# 1
+pieces_bleu[2].forme = [[1, 1], [1, 0]]						# 2
+pieces_bleu[3].forme = [[1, 1], [1, 1]]						# 3
 pieces_bleu[4].forme = [[1, 1, 1], [0, 0, 0], [0, 0, 0]]	# 4
 pieces_bleu[5].forme = [[1, 0, 0], [1, 1, 1], [0, 0, 0]]	# 5
 pieces_bleu[6].forme = [[1, 1, 1], [0, 1, 0], [0, 0, 0]]	# 6

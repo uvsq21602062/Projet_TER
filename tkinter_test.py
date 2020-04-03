@@ -10,6 +10,20 @@ class Example(Frame):
         self.initUI()
 
 
+    def affiche_pieces_rouge2(canvas, piece, pos_x, pos_y, color):
+        print ("L'ets reaffiche les pieces")
+        c_row = 0
+        c_clm = 0
+
+        for j in definition_des_pieces.pieces_rouge[piece].forme:
+            for k in j:
+                if k==1:
+                    canvas.create_rectangle(pos_x+c_row*50+5, pos_y+c_clm*50, 
+                        pos_x+c_row*50+50+5, pos_y+c_clm*50+50, fill=color)
+                c_row=c_row+1
+
+            c_clm=c_clm+1
+            c_row = 0
 
     def affiche_pieces_rouge(self, canvas, piece, pos_x, pos_y):
     	c_row = 0
@@ -53,7 +67,7 @@ class Example(Frame):
 
     def initUI(self):
         
-        self.configure(background='black')
+        #self.configure(background='black')
 
         self.pack(fill=BOTH, expand=1)
 
@@ -137,7 +151,7 @@ class Example(Frame):
 
         	if i.id==16:
         		i.rotation()
-        		self.affiche_pieces_rouge(canvas, i, 10, 480)		# done
+        		self.affiche_pieces_rouge(canvas, i, -90, 480)		# done
 
         	if i.id==17:
         		i.rotation()
@@ -267,15 +281,61 @@ class Example(Frame):
         canvas.pack(fill=BOTH, expand=1)
 
 
+    
+
+
+def Up(event):
+    print ("up us pressed")
+    #Frame.configure(background='black')
+    Example.pack( fill=BOTH, expand=1)
+    canvas = Canvas(Example)
+    Example.affiche_pieces_rouge2(canvas, 13, 180, 450, "black")
+    
+
+def Down(event):
+    print ("down us pressed")
+
+def key1(event, rootin):
+    
+    kp= repr(event.char)
+    print ("pressed", kp)
+    if event.keycode==102:
+        print("what the F is pressed! La on va choisir la piece ")
+        #choisirPiece(event, rootin)
+
+    if event.keycode==113:
+        print("let's quit")
+        rootin.quit()
+
+"""
+def callback(event):
+    frame.focus_set()
+    print ("clicked at", event.x, event.y)
+"""
 
 def main():
 
+    idPiece=0
+
+
     root = Tk()
+
     root.title('BLOCUS')
     root.geometry("1440x860")
 
     ex = Example(root)
-    root.mainloop(0)
+
+    #root = Frame(root, width=1000, height=10)
+    root.bind("<Key>", lambda event, rootin = root : key1(event, rootin))
+
+    root.bind("<Up>", Up)
+    root.bind("<Down>", Down)
+    #root.bind("<Button-1>", callback)
+    #frame.pack()
+
+
+
+    root.mainloop()
 
 
 if __name__ == '__main__':
