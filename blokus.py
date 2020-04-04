@@ -8,7 +8,7 @@ plateau = plateau.Plateau(14)
 
 
 def validation_entree(entree, taille_max):
-	"""Fonction vérifiant le type et la valeur de l'entree donné par le joueur en question."""
+	"""Fonction vérifiant le type et la valeur de l'entrée donné par le joueur en question."""
 	
 	try: 
 		res = int(entree)
