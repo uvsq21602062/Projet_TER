@@ -6,7 +6,6 @@ class Joueur:
 
 	def __init__(self, pieces, couleur):
 		"""Constructeur définissant les attributs"""
-		print("\nAppel au constructeur de Joueur avec l'attribut couleur = {}\n".format(couleur))
 
 		try:
 			assert couleur == "ROUGE" or couleur == "BLEU"
@@ -25,6 +24,7 @@ class Joueur:
 				else:
 					self.couleur = couleur
 					self.pieces = pieces
+					self.derniere_piece_jouee = self.pieces[1]
 
 	def afficher(self):
 		"""Méthode affichant la couleur du joueur et ces pieces"""
