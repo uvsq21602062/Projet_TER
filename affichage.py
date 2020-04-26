@@ -10,7 +10,6 @@ class Example(Frame):
 
         self.joueur = 0 #rouge= 0
                         #bleu = 1
-
         self.canvas = Canvas(self)
         self.grille()
 
@@ -48,34 +47,35 @@ class Example(Frame):
         if self.joueur==0:
             posx=370
             posy=50
+            position_final_x=[0]
+            position_final_y=[0]
         elif self.joueur==1:
             posx=970
             posy=650
+            position_final_x=[12]
+            position_final_y=[12]
 
         self.efface_piece(self.canvas, index[0], 60, 250, 0)
         self.affiche_piece(self.canvas, index[0], posx, posy)
-        self.ChoisirLaPlaceDePieceChoisi(event, index, theId, canvas, posx, posy)
+        self.ChoisirLaPlaceDePieceChoisi(event, index, theId, canvas, posx, posy, position_final_x, position_final_y)
 
 
-    def ChoisirLaPlaceDePieceChoisi(self, event, index, theId, canvas, posx, posy):
-        canvas.bind("<Up>", lambda event, index = index, theId=theId, canvas = canvas, posx = posx, posy=posy: self.GoUp(event, index, theId, canvas, posx, posy))
-        canvas.bind("<Down>", lambda event, index = index, theId=theId, canvas = canvas, posx = posx, posy=posy : self.GoDown(event, index, theId, canvas, posx, posy))
-        canvas.bind("<Right>", lambda event, index = index, theId=theId, canvas = canvas, posx = posx, posy=posy : self.GoRight(event, index, theId, canvas, posx, posy))
-        canvas.bind("<Left>", lambda event, index = index, theId=theId, canvas = canvas, posx = posx, posy=posy : self.GoLeft(event, index, theId, canvas, posx, posy))  
+    def ChoisirLaPlaceDePieceChoisi(self, event, index, theId, canvas, posx, posy, x, y):
+        #print ("x is :" , x[0])
+        #print ("y is :" , y[0])
+        canvas.bind("<Up>", lambda event, index = index, theId=theId, canvas = canvas, posx = posx, posy = posy : self.GoUp(event, index, theId, canvas, posx, posy, x, y))
+        canvas.bind("<Down>", lambda event, index = index, theId=theId, canvas = canvas, posx = posx, posy = posy : self.GoDown(event, index, theId, canvas, posx, posy, x, y))
+        canvas.bind("<Right>", lambda event, index = index, theId=theId, canvas = canvas, posx = posx, posy = posy : self.GoRight(event, index, theId, canvas, posx, posy, x, y))
+        canvas.bind("<Left>", lambda event, index = index, theId=theId, canvas = canvas, posx = posx, posy = posy : self.GoLeft(event, index, theId, canvas, posx, posy, x, y))  
         canvas.bind("<r>", lambda event, index = index, theId=theId, canvas = canvas, posx = posx, posy=posy : self.rotatePiece(event, index, theId, canvas, posx, posy))  
-        canvas.bind("<space>", lambda event, root = canvas, index = index, theId=theId : self.MettreLaPieceChoisi(event, root, index, theId))
+        canvas.bind("<space>", lambda event, root = canvas, index = index, theId=theId : self.MettreLaPieceChoisi(event, root, index, theId, x, y))
 
-    def MettreLaPieceChoisi(self, event, root, index, theId):
-        if self.joueur==0:
-            #definition_des_pieces.pieces_rouge.pop(theId[0])
-            print("taille actuelle de liste rouge : ", len(definition_des_pieces.pieces_rouge))
-
+    def MettreLaPieceChoisi(self, event, root, index, theId, x, y):
+        print ("le jouer ", self.joueur, " veut poser la piece dans la position ",x , " ", y)
         self.changeJoeur(index)
         self.getUserInput(root, index, theId)
         
         #elif self.joueur==1:
-
-
 
     def rotatePiece(self, event, index, theId, canvas, posx, posy):
         print ("rotation de la piece")
@@ -84,32 +84,36 @@ class Example(Frame):
         self.affiche_piece(self.canvas, index[0], posx, posy)
         self.grille()
 
-    def GoUp(self, event, index, theId, canvas, posx, posy):
+    def GoUp(self, event, index, theId, canvas, posx, posy, x, y):
+        x[0]=x[0]-1
         print ("bouger la piece vers le haut :" , index)
         self.efface_piece(self.canvas, index[0], posx, posy, 0)
         self.affiche_piece(self.canvas, index[0], posx, posy-50)
-        Example.ChoisirLaPlaceDePieceChoisi(self, event, index, theId, canvas, posx, posy-50)
+        Example.ChoisirLaPlaceDePieceChoisi(self, event, index, theId, canvas, posx, posy-50, x, y)
         self.grille()
 
-    def GoDown(self, event, index, theId, canvas, posx, posy):
+    def GoDown(self, event, index, theId, canvas, posx, posy, x, y):
+        x[0]=x[0]+1
         print ("bouger la piece vers le bas :" , index)
         self.efface_piece(self.canvas, index[0], posx, posy, 0)
         self.affiche_piece(self.canvas, index[0], posx, posy+50)
-        Example.ChoisirLaPlaceDePieceChoisi(self, event, index, theId, canvas, posx, posy+50)
+        Example.ChoisirLaPlaceDePieceChoisi(self, event, index, theId, canvas, posx, posy+50, x, y)
         self.grille()
 
-    def GoLeft(self, event, index, theId, canvas, posx, posy):
+    def GoLeft(self, event, index, theId, canvas, posx, posy, x, y):
+        y[0]=y[0]-1
         print ("bouger la piece vers la gauche :" , index)
         self.efface_piece(self.canvas, index[0], posx, posy, 0)
         self.affiche_piece(self.canvas, index[0], posx-50, posy)
-        Example.ChoisirLaPlaceDePieceChoisi(self, event, index, theId, canvas, posx-50, posy)
+        Example.ChoisirLaPlaceDePieceChoisi(self, event, index, theId, canvas, posx-50, posy, x, y)
         self.grille()
 
-    def GoRight(self, event, index, theId, canvas, posx, posy):
+    def GoRight(self, event, index, theId, canvas, posx, posy, x, y):
+        y[0]=y[0]+1
         print ("bouger la piece vers la droit :" , index)
         self.efface_piece(self.canvas, index[0], posx, posy, 0)
         self.affiche_piece(self.canvas, index[0], posx+50, posy)
-        Example.ChoisirLaPlaceDePieceChoisi(self, event, index, theId, canvas, posx+50, posy)
+        Example.ChoisirLaPlaceDePieceChoisi(self, event, index, theId, canvas, posx+50, posy, x, y)
         self.grille()
 
 
@@ -214,27 +218,20 @@ class Example(Frame):
 
 
     def grille(self):
-        
-        #self.configure(background='black')
 
         self.pack(fill=BOTH, expand=1)
-
-        #canvas = Canvas(self)
-
         for i in range(15):
             self.canvas.create_line(i*50+370, 50, i*50+370, 750)
 
         for i in range(15):
             self.canvas.create_line(370, i*50+50, 1070, i*50+50)
 
-
         self.canvas.pack(fill=BOTH, expand=1)
+
 
 
     def getUserInput(self, root, index, theId):
         print ("we restart taking users input")
-
-        
 
         root.unbind("<Left>")
         root.unbind("<Right>")
