@@ -78,3 +78,14 @@ class Piece:
 				print("{} ".format(self.forme[j][self.largeur-1 - i]), end='')
 			print()
 		print()
+
+"""
+def main():
+	print("main")
+
+
+if __name__ == '__main__':
+    main()
+
+
+"""
