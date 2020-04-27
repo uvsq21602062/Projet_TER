@@ -17,8 +17,7 @@ class Piece:
 	def __init__(self, largeur, couleur, id):
 		"""Constructeur définissant les attributs et mettant
 		à 0 la forme de la pièce"""
-		print("\nAppel au constructeur de Piece avec l'attribut largeur = {} et l'attribut couleur = {}\n".format(largeur, couleur))
-
+		
 		try:
 			assert type(largeur) == int and largeur > 0
 			assert couleur == "ROUGE" or couleur == "BLEU"
@@ -34,10 +33,6 @@ class Piece:
 
 	def rotation(self):
 		"""Méthode effectuant une rotation de la pièce dans le sens des aiguilles d'une montre."""
-		print("\nRotation dans le sens horaire d'une piece {}\n")
-
-		self.afficher()
-		print("\n--> Rotation -->\n")
 
 		"""Variable temporaire dans laquelle sera stocké la valeur de chaque élément de la
 		liste pour la permutation."""
@@ -55,11 +50,9 @@ class Piece:
 
 		"""Cette phase consiste à vérifier qu'une rangée à x = 0 ou y = 0 ne soit pas
 		complètement à 0. Dans ce cas on décale.
-		(exemple :	1 0 0			1 1 1			0 0 0
-				1 0 0		->	1 0 0		->	1 1 1
-				1 1 0	rotation	0 0 0	décalage	1 0 0)"""
-		self.afficher()
-		print("\n--> Décalage -->\n")
+		(exemple :	1 0 0				1 1 1				0 0 0
+					1 0 0		->		1 0 0		->		1 1 1
+					1 1 0	rotation	0 0 0	décalage	1 0 0)"""
 
 		rangee_x_0 = 0
 		rangee_y_0 = 0
@@ -75,8 +68,6 @@ class Piece:
 				for i in range(self.largeur):
 					for j in range(self.largeur-1):
 						self.forme[i][j], self.forme[i][j+1] = self.forme[i][j+1], self.forme[i][j]
-
-		self.afficher()
 
 
 	def afficher(self):
