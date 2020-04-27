@@ -105,8 +105,10 @@ class Plateau:
 		"""Méthode vérifiant qu'une piece se trouve sur un des points de départ non occupé."""
 		for i in range(piece.largeur):
 			for j in range(piece.largeur):
-				if piece.forme[i][j] == 1 and self.cases[x+i][y+j] == "DEPART":
-					return 1
+				try:
+					if piece.forme[i][j] == 1 and self.cases[x+i][y+j] == "DEPART":
+						return 1
+				except: pass
 
 	def afficher(self):
 		"""Methode affichant le plateau dans le terminal."""
