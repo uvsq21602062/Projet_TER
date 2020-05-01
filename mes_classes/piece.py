@@ -30,6 +30,7 @@ class Piece:
 			self.forme = [[0 for j in range(largeur)] for i in range(largeur)]
 			self.couleur = couleur
 			self.id=id
+			
 
 	def rotation(self):
 		"""Méthode effectuant une rotation de la pièce dans le sens des aiguilles d'une montre."""
@@ -78,14 +79,3 @@ class Piece:
 				print("{} ".format(self.forme[j][self.largeur-1 - i]), end='')
 			print()
 		print()
-
-"""
-def main():
-	print("main")
-
-
-if __name__ == '__main__':
-    main()
-
-
-"""

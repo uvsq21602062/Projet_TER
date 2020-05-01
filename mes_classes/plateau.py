@@ -60,21 +60,22 @@ class Plateau:
 		for i in range(piece.largeur):
 			for j in range(piece.largeur):
 				if piece.forme[i][j] == 1:
-					try:
-						if self.cases[x+i+1][y+j] == piece.couleur: return 0
-					except: pass
-					finally:
-						try:
-							if self.cases[x+i-1][y+j] == piece.couleur: return 0
-						except: pass
-						finally:
-							try:
-								if self.cases[x+i][y+j+1] == piece.couleur: return 0
-							except: pass
-							finally:
-								try:
-									if self.cases[x+i][y+j-1] == piece.couleur: return 0
-								except: pass
+					if x+i+1 < self.largeur:
+						if self.cases[x+i+1][y+j] == piece.couleur:
+							print("debug cas 1")
+							return 0
+					if x+i-1 >= 0:
+						if self.cases[x+i-1][y+j] == piece.couleur:
+							print("debug cas 2")
+							return 0
+					if y+j+1 < self.largeur:
+						if self.cases[x+i][y+j+1] == piece.couleur:
+							print("debug cas 3")
+							return 0
+					if y+j-1 >= 0:
+						if self.cases[x+i][y+j-1] == piece.couleur:
+							print("debug cas 4")
+							return 0
 		return 1
 
 	def piece_angle(self, piece, x, y):
@@ -84,25 +85,22 @@ class Plateau:
 		for i in range(piece.largeur):
 			for j in range(piece.largeur):
 				if piece.forme[i][j] == 1:
-					try:
-						if self.cases[x+i+1][y+j+1] == piece.couleur: return 0
-					except: pass
-					finally:
-						try:
-							if self.cases[x+i-1][y+j+1] == piece.couleur: return 0
-						except: pass
-						finally:
-							try:
-								if self.cases[x+i+1][y+j-1] == piece.couleur: return 0
-							except: pass
-							finally:
-								try:
-									if self.cases[x+i-1][y+j-1] == piece.couleur: return 0
-								except: pass
-		return 1
+					if x+i+1 < self.largeur and y+j+1 < self.largeur:
+						if self.cases[x+i+1][y+j+1] == piece.couleur: return 1
+
+					if x+i-1 >= 0 and y+j+1 < self.largeur:
+						if self.cases[x+i-1][y+j+1] == piece.couleur: return 1
+					
+					if x+i+1 < self.largeur and y+j-1 >= 0:
+						if self.cases[x+i+1][y+j-1] == piece.couleur: return 1
+
+					if x+i-1 >= 0 and y+j-1 >= 0:
+						if self.cases[x+i-1][y+j-1] == piece.couleur: return 1
+		return 0
 
 	def piece_point_depart(self, piece, x, y):
 		"""Méthode vérifiant qu'une piece se trouve sur un des points de départ non occupé."""
+
 		for i in range(piece.largeur):
 			for j in range(piece.largeur):
 				try:

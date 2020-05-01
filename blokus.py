@@ -9,7 +9,7 @@ import definition_des_pieces
 def jeu():
 	"""Fonction qui déroule toute une partie."""
 	joueur_rouge = joueur.Joueur(definition_des_pieces.pieces_rouge, "ROUGE", "HUMAIN")
-	joueur_bleu = joueur.Joueur(definition_des_pieces.pieces_bleu, "BLEU", "MACHINE")
+	joueur_bleu = joueur.Joueur(definition_des_pieces.pieces_bleu, "BLEU", "HUMAIN")
 	plateau_jeu = plateau.Plateau(14)
 
 	joueur_rouge_peut_jouer = 1

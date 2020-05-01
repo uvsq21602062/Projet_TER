@@ -17,41 +17,50 @@ def validation_entree(entree, taille_max):
 
 def respect_regle(plateau, piece, x, y, numero_tour, verbose):
 	"""Fonction vérifiant que l'action demandé
-	respecte bien les règles et qu'il est possible de la placer."""
+	respecte bien les règles et qu'il est possible de la placer.
+	Elle renvoit le numero de l'erreur qui s'est produite ou 0 si il n'y a pas eu d'erreur."""
 	
 	if numero_tour == 0:
 		if plateau.piece_point_depart(piece, x, y):
-			return 1
-		else:
-			print("\nERREUR REGLE : votre piece ne se trouve pas sur un point de départ.")
-			print("Pour rappel, votre piece doit recouvrir la case (4, 9) ou (9, 4) non occupée.\n")
 			return 0
+		else:
+			if verbose:
+				print("\nERREUR REGLE : votre piece ne se trouve pas sur un point de départ.")
+				print("Pour rappel, votre piece doit recouvrir la case (4, 9) ou (9, 4) non occupée.\n")
+			return 1
 	if plateau.piece_dans_plateau(piece, x, y):
 		if plateau.piece_sur_cases_libres(piece, x, y):
 			if plateau.piece_cote(piece, x, y):
 				if plateau.piece_angle(piece, x, y):
-					return 1
-				elif verbose:
-					print("\nERREUR REGLE : Votre piece ne touche par les angles aucune piece de la meme couleur.\n")
-			elif verbose:
-				print("\nERREUR REGLE : Votre piece touche par les cotes une autre piece de la même couleur.\n")
-		elif verbose:
-			print("\nERREUR REGLE : Les cases concernées par la forme de la pièce ne sont pas libres.\n")
-	elif verbose:
-		print("\nERREUR REGLE : La piece dépasse du plateau. Veuillez rééssayer\n")
-	
-	return 0
+					return 0
+				else:
+					if verbose:
+						print("\nERREUR REGLE : Votre piece ne touche par les angles aucune piece de la meme couleur.\n")
+					return 2
+			else:
+				if verbose:
+					print("\nERREUR REGLE : Votre piece touche par les cotes une autre piece de la même couleur.\n")
+				return 3
+		else:
+			if verbose:
+				print("\nERREUR REGLE : Les cases concernées par la forme de la pièce ne sont pas libres.\n")
+			return 4
+	else:
+		if verbose:
+			print("\nERREUR REGLE : La piece dépasse du plateau. Veuillez rééssayer\n")
+		return 5
 
 def joueur_peut_jouer(plateau, joueur, numero_tour):
 		"""Fonction regardant s'il est encore possible pour un joueur de placer une pièce sur
 		le plateau. Cette fontion renvoie 1 si c'est encore possible et 0 sinon."""
+		
 		if numero_tour == 0:
 			return 1
 		for i in range(plateau.largeur):
 			for j in range(plateau.largeur):
 				for k in range(len(joueur.pieces)-1):
 					for l in range(4):
-						if respect_regle(plateau, joueur.pieces[k], i, j, numero_tour, 0):
+						if respect_regle(plateau, joueur.pieces[k], i, j, numero_tour, 0) == 0:
 							return 1
 						joueur.pieces[k].rotation()
 		return 0
@@ -97,6 +106,7 @@ def fin_partie(joueur_rouge, joueur_bleu):
 		print("Le joueur BLEU gagne !")
 	else:	
 		print("Match nul")
+	return "Fin de la partie\nPoints du joueur ROUGE : {}\nPoints du joueur BLEU : {}\n".format(points_rouge, points_bleu)
 
 def tour(plateau, joueur, numero_tour):
 	"""Fonction permettant de dérouler un tour : 
@@ -128,7 +138,7 @@ def tour(plateau, joueur, numero_tour):
 						entree = joueur.choix_position_y()
 						y_pos = validation_entree(entree, plateau.largeur-1)
 						if y_pos != -1 and y_pos != 'q':
-							if respect_regle(plateau, joueur.pieces[indice_piece], x_pos, y_pos, numero_tour, 1):
+							if respect_regle(plateau, joueur.pieces[indice_piece], x_pos, y_pos, numero_tour, 1) == 0:
 								plateau.pose_piece(joueur.pieces[indice_piece], x_pos, y_pos)
 								joueur.derniere_piece_jouee = joueur.pieces[indice_piece]
 								del joueur.pieces[indice_piece]
