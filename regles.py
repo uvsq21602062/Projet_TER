@@ -108,6 +108,7 @@ def fin_partie(joueur_rouge, joueur_bleu):
 		print("Match nul")
 	return "Fin de la partie\nPoints du joueur ROUGE : {}\nPoints du joueur BLEU : {}\n".format(points_rouge, points_bleu)
 
+
 def tour(plateau, joueur, numero_tour):
 	"""Fonction permettant de dérouler un tour : 
 		- Demande la pièce à jouer

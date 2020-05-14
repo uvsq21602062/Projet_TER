@@ -2,15 +2,13 @@ from mes_classes import IA
 from mes_classes import joueur
 from mes_classes import piece
 from mes_classes import plateau
+from mes_classes import interface
 import regles
 import definition_des_pieces
 
 
-def jeu():
-	"""Fonction qui déroule toute une partie."""
-	joueur_rouge = joueur.Joueur(definition_des_pieces.pieces_rouge, "ROUGE", "HUMAIN")
-	joueur_bleu = joueur.Joueur(definition_des_pieces.pieces_bleu, "BLEU", "HUMAIN")
-	plateau_jeu = plateau.Plateau(14)
+def jeu_sans_ihm(joueur_rouge, joueur_bleu, plateau_jeu):
+	"""Fonction qui déroule toute une partie en ligne de commande."""
 
 	joueur_rouge_peut_jouer = 1
 	joueur_bleu_peut_jouer = 1
@@ -41,4 +39,48 @@ def jeu():
 
 	regles.fin_partie(joueur_rouge, joueur_bleu)
 
-jeu()
+
+def choix_jeu():
+	"""Fonction demandant à l'utilisateur de quelle manière il souhaite jouer."""
+
+	type_interface = ""
+	type_joueur_rouge = ""
+	type_joueur_bleu = ""
+
+	# On demande à l'utilisateur s'il souhaite jouer dans le terminal ou avec une interface graphique.
+	while type_interface != 'g' and type_interface != 't':
+		print("Tapez (g) pour jouer avec une interface graphique ou (t) pour jouer dans le terminal.")
+		type_interface = input()
+
+	# On demande le type du joueur rouge
+	while type_joueur_rouge != 'm' and type_joueur_rouge != 'h':
+		print("Tapez (m) pour definir le joueur rouge en machine ou (h) sinon.")
+		type_joueur_rouge = input()
+
+	# On demande le type du joueur bleu
+	while type_joueur_bleu != 'm' and type_joueur_bleu != 'h':
+		print("Tapez (m) pour definir le joueur bleu en machine ou (h) sinon.")
+		type_joueur_bleu = input()
+
+	# Joueur rouge :
+	if type_joueur_rouge == 'm':
+		joueur_rouge = joueur.Joueur(definition_des_pieces.pieces_rouge, "ROUGE", "MACHINE")
+	else: 
+		joueur_rouge = joueur.Joueur(definition_des_pieces.pieces_rouge, "ROUGE", "HUMAIN")
+	# Joueur bleu :
+	if type_joueur_bleu == 'm':
+		joueur_bleu = joueur.Joueur(definition_des_pieces.pieces_bleu, "BLEU", "MACHINE")
+	else: 
+		joueur_bleu = joueur.Joueur(definition_des_pieces.pieces_bleu, "BLEU", "HUMAIN")
+	# Plateau :
+	plateau_jeu = plateau.Plateau(14)
+
+	if type_interface == 't':
+		jeu_sans_ihm(joueur_rouge, joueur_bleu, plateau_jeu)
+	else:
+		interface_graphique = interface.Interface(plateau_jeu, 1000, joueur_rouge, joueur_bleu)
+		interface_graphique.mainloop()
+
+choix_jeu()
+
+

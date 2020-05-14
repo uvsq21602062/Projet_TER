@@ -62,19 +62,15 @@ class Plateau:
 				if piece.forme[i][j] == 1:
 					if x+i+1 < self.largeur:
 						if self.cases[x+i+1][y+j] == piece.couleur:
-							print("debug cas 1")
 							return 0
 					if x+i-1 >= 0:
 						if self.cases[x+i-1][y+j] == piece.couleur:
-							print("debug cas 2")
 							return 0
 					if y+j+1 < self.largeur:
 						if self.cases[x+i][y+j+1] == piece.couleur:
-							print("debug cas 3")
 							return 0
 					if y+j-1 >= 0:
 						if self.cases[x+i][y+j-1] == piece.couleur:
-							print("debug cas 4")
 							return 0
 		return 1
 

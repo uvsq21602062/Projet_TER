@@ -109,8 +109,8 @@ class Interface(Tk):
 
 		# Sinon on affiche le resultat
 		else:
-			self.message_qui_joue["text"] = 0
-			self.message_erreur["text"] = 0
+			self.message_qui_joue["text"] = ""
+			self.message_erreur["text"] = ""
 			self.message_instruction["text"] = self.resultat
 
 	def affiche_selection_piece(self):
