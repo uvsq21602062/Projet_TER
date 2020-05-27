@@ -40,7 +40,7 @@ class Arbre:
 		"""Constructeur définissant les attributs"""
 
 		self.hauteur = hauteur
-		self.noeud_racine = Noeud("RACINE", None, None, 0, 0, 0)
+		self.noeud_racine = Noeud(joueur_adverse.couleur, None, None, 0, 0, 0)
 		self.joueur = joueur
 		self.joueur_adverse = joueur_adverse
 		self.plateau = plateau
@@ -50,39 +50,44 @@ class Arbre:
 		self.nbre_cases_y_a_tester = 4
 
 
-	def construction_racine(self):
-		"""Méthode construisant l'arbre en explorant jusqu'à un certain niveau les coups possible"""
 
-		self.recherche_coups_possibles_probabiliste(self.noeud_racine, self.plateau, self.joueur, self.numero_tour)
-
-
-
-	def nouvel_etage(self, noeud, plateau, joueur):
+	def nouvel_etage(self, noeud=None, plateau=None, joueur=None, joueur_adverse=None):
 		"""Méthode récursive construisant un nouvel étage
 		(un etage adverse et un etage joueur) dans l'arbre"""
 
+		# On gere les valeurs par défaut
+		if noeud is None: noeud = self.noeud_racine
+		if plateau is None: plateau = self.plateau
+		if joueur is None: joueur = self.joueur
+		if joueur_adverse is None: joueur_adverse = self.joueur_adverse
+
 		# On applique les modifications du noeud actuel sur des nouvelles variables
 		plateau_bis = copy.deepcopy(plateau)
-		joueur_bis = copy.deepcopy(joueur)
+		# Cette condition permet d'alterner la couleur des étages
+		if noeud.couleur == joueur.couleur:
+			joueur_actuel = copy.deepcopy(joueur)
+			joueur_suivant = joueur_adverse # On ne fait pas de copy car on ne fait pas de modification sur cette variable
+		else:
+			joueur_actuel = copy.deepcopy(joueur_adverse)
+			joueur_suivant = joueur
 		# Si le noeud n'est pas racine, on applique les données du noeud sur des nouvelles variables
 		# Le noeud racine est un peu spécial car il ne propose pas de coup
 		if noeud is not self.noeud_racine:
 			# On fait le nombre de rotation indiquée
 			for j in range(noeud.rotation):
-				joueur_bis.pieces[noeud.indice_piece].rotation()
+				joueur_actuel.pieces[noeud.indice_piece].rotation()
 			# On pose la piece sur le plateau
-			plateau_bis.pose_piece(joueur_bis.pieces[noeud.indice_piece], noeud.x, noeud.y)
+			plateau_bis.pose_piece(joueur_actuel.pieces[noeud.indice_piece], noeud.x, noeud.y)
 			# On retire la piece du joueur
-			del joueur_bis.pieces[noeud.indice_piece]
+			del joueur_actuel.pieces[noeud.indice_piece]
 
 		# Si les noeuds fils n'ont pas été explorés, on les complète
 		if len(noeud.noeuds_fils) == 0:
-			self.recherche_coups_possibles_probabiliste(noeud, plateau_bis, joueur_bis, self.numero_tour)
+			self.recherche_coups_possibles_probabiliste(noeud, plateau_bis, joueur_suivant, self.numero_tour)
 		# Sinon (si ils n'ont pas été explorés), on lance un appel récursif sur chacun.
 		else:
 			for i in range(len(noeud.noeuds_fils)):
-				print(i)
-				self.nouvel_etage(noeud.noeuds_fils[i], plateau_bis, joueur_bis)
+				self.nouvel_etage(noeud.noeuds_fils[i], plateau_bis, joueur_suivant, joueur_actuel)
 
 
 
@@ -101,7 +106,7 @@ class Arbre:
 					for l in range(plateau.largeur):
 						# Si ce coup respecte les regles, alors on créer un nouveau noeud
 						if regles.respect_regle(plateau, joueur.pieces[i], k, l, numero_tour, 0) == 0:
-							noeud.noeuds_fils.append(Noeud(joueur.couleur, self, i, j, k, l))
+							noeud.noeuds_fils.append(Noeud(joueur.couleur, noeud, i, j, k, l))
 				joueur.pieces[i].rotation()
 
 
@@ -121,24 +126,25 @@ class Arbre:
 						y = randint(0, plateau.largeur-1)
 						# Si ce coup respecte les regles, alors on créer un nouveau noeud
 						if regles.respect_regle(plateau, joueur.pieces[indice_piece], x, y, numero_tour, 0) == 0:
-							noeud.noeuds_fils.append(Noeud(joueur.couleur, self, indice_piece, j, x, y))
+							noeud.noeuds_fils.append(Noeud(joueur.couleur, noeud, indice_piece, j, x, y))
 				joueur.pieces[indice_piece].rotation()
 
 
 
-	def afficher(self, noeud, joueur, niveau = 0):
+	def afficher(self, noeud=None, niveau = 0):
 		"""Méthode permetant d'afficher l'arbre dans le terminal"""
 
+		# Gestion de la valeur noeud par défaut
+		if noeud is None: noeud = self.noeud_racine
 		for i in range(len(noeud.noeuds_fils)):
-			print(' ' * 8 * niveau + "{} : indice_piece = {} x = {} y = {} rotation = {}".format(\
+			print(' ' * 8 * niveau + "{} : couleur = {} indice_piece = {} x = {} y = {} rotation = {}".format(\
 				i,\
+				noeud.noeuds_fils[i].couleur,\
 				noeud.noeuds_fils[i].indice_piece,\
 				noeud.noeuds_fils[i].x,\
 				noeud.noeuds_fils[i].y,\
 				noeud.noeuds_fils[i].rotation))
 			if len(noeud.noeuds_fils[i].noeuds_fils):
-				joueur_bis = copy.deepcopy(joueur)
-				del joueur_bis.pieces[noeud.noeuds_fils[i].indice_piece]
-				self.afficher(noeud.noeuds_fils[i], joueur_bis, niveau + 1)
+				self.afficher(noeud.noeuds_fils[i], niveau + 1)
 
 

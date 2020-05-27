@@ -12,12 +12,12 @@ p = plateau.Plateau(14)
 
 a = arbre.Arbre(1, j1, j2, p, 0)
 
-a.construction_racine()
+a.nouvel_etage()
+
+a.nouvel_etage()
 
 a.numero_tour += 1
 
-a.nouvel_etage(a.noeud_racine, a.plateau, a.joueur)
+a.nouvel_etage()
 
-a.nouvel_etage(a.noeud_racine, a.plateau, a.joueur)
-
-a.afficher(a.noeud_racine, a.joueur)
+a.afficher()
