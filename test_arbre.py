@@ -20,4 +20,8 @@ a.numero_tour += 1
 
 a.nouvel_etage()
 
+a.nouvel_etage()
+
+a.minmax()
+
 a.afficher()

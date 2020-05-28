@@ -131,14 +131,73 @@ class Arbre:
 
 
 
+	def minmax(self, noeud=None, plateau=None, joueur=None, joueur_adverse=None):
+		"""Fonction appliquant la méthode minmax sur l'arbre."""
+
+		# On gere les valeurs par défaut
+		if noeud is None: noeud = self.noeud_racine
+		if plateau is None: plateau = self.plateau
+		if joueur is None: joueur = self.joueur
+		if joueur_adverse is None: joueur_adverse = self.joueur_adverse
+
+		# On applique les modifications du noeud actuel sur des nouvelles variables
+		plateau_bis = copy.deepcopy(plateau)
+		# Cette condition permet d'alterner la couleur des étages
+		if noeud.couleur == joueur.couleur:
+			joueur_actuel = copy.deepcopy(joueur)
+			joueur_suivant = joueur_adverse # On ne fait pas de copy car on ne fait pas de modification sur cette variable
+		else:
+			joueur_actuel = copy.deepcopy(joueur_adverse)
+			joueur_suivant = joueur
+		# Si le noeud n'est pas racine, on applique les données du noeud sur des nouvelles variables
+		# Le noeud racine est un peu spécial car il ne propose pas de coup
+		if noeud is not self.noeud_racine:
+			# On fait le nombre de rotation indiquée
+			for j in range(noeud.rotation):
+				joueur_actuel.pieces[noeud.indice_piece].rotation()
+			# On pose la piece sur le plateau
+			plateau_bis.pose_piece(joueur_actuel.pieces[noeud.indice_piece], noeud.x, noeud.y)
+			# On retire la piece du joueur
+			del joueur_actuel.pieces[noeud.indice_piece]
+
+		# Si les noeuds fils n'existe pas, alors le noeud est une feuille et donc on l'évalue
+		if len(noeud.noeuds_fils) == 0:
+			noeud.valeur = self.fonction_evaluation(plateau_bis, joueur_actuel, joueur_suivant)
+		# Sinon si le noeud n'est pas une feuille, on lance un appel récursif.
+		else:
+			for i in range(len(noeud.noeuds_fils)):
+				self.minmax(noeud.noeuds_fils[i], plateau_bis, joueur_suivant, joueur_actuel)
+
+
+
+	def fonction_evaluation(self, plateau, joueur, joueur_adverse):
+		"""Cette méthode permet d'évaluer un noeud en fonction de la situation actuelle du joueur"""
+
+		points_joueur = 0;
+		points_adverse = 0;
+
+		# On compte le nombre de cases de la couleur sur le plateau (nombre de points)
+		for i in range(plateau.largeur):
+			for j in range(plateau.largeur):
+				if(plateau.cases[i][j] == joueur.couleur):
+					points_joueur += 1
+				elif(plateau.cases[i][j] == joueur_adverse.couleur):
+					points_adverse += 1
+
+		# On évalue en soustrayant le gain du joueur avec le gain de l'autre
+		return points_joueur - points_adverse
+
+
+
 	def afficher(self, noeud=None, niveau = 0):
 		"""Méthode permetant d'afficher l'arbre dans le terminal"""
 
 		# Gestion de la valeur noeud par défaut
 		if noeud is None: noeud = self.noeud_racine
 		for i in range(len(noeud.noeuds_fils)):
-			print(' ' * 8 * niveau + "{} : couleur = {} indice_piece = {} x = {} y = {} rotation = {}".format(\
+			print(' ' * 8 * niveau + "{} : points = {} couleur = {} indice_piece = {} x = {} y = {} rotation = {}".format(\
 				i,\
+				noeud.noeuds_fils[i].valeur,\
 				noeud.noeuds_fils[i].couleur,\
 				noeud.noeuds_fils[i].indice_piece,\
 				noeud.noeuds_fils[i].x,\
