@@ -18,10 +18,10 @@ a.nouvel_etage()
 
 a.numero_tour += 1
 
-a.nouvel_etage()
+#a.nouvel_etage()
 
-a.nouvel_etage()
+#a.nouvel_etage()
 
-a.minmax()
+print(a.minmax())
 
 a.afficher()

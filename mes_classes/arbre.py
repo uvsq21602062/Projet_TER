@@ -163,10 +163,26 @@ class Arbre:
 		# Si les noeuds fils n'existe pas, alors le noeud est une feuille et donc on l'évalue
 		if len(noeud.noeuds_fils) == 0:
 			noeud.valeur = self.fonction_evaluation(plateau_bis, joueur_actuel, joueur_suivant)
-		# Sinon si le noeud n'est pas une feuille, on lance un appel récursif.
+			return noeud.valeur
+		# Sinon si le noeud n'est pas une feuille, on lance un appel récursif et on calcul le min (ou max) de leur valeur
 		else:
-			for i in range(len(noeud.noeuds_fils)):
-				self.minmax(noeud.noeuds_fils[i], plateau_bis, joueur_suivant, joueur_actuel)
+			valeur_minmax = 0
+			# Si le noeud est un noeud joueur, on va chercher à le maximiser
+			if noeud.couleur == self.joueur.couleur:
+				valeur_minmax = -1000
+				for i in range(len(noeud.noeuds_fils)):
+					valeur = self.minmax(noeud.noeuds_fils[i], plateau_bis, joueur_suivant, joueur_actuel)
+					if valeur > valeur_minmax:
+						valeur_minmax = valeur
+			# Sinon on va chercher à le minimiser
+			else:
+				valeur_minmax = 1000
+				for i in range(len(noeud.noeuds_fils)):
+					valeur = self.minmax(noeud.noeuds_fils[i], plateau_bis, joueur_suivant, joueur_actuel)
+					if valeur < valeur_minmax:
+						valeur_minmax = valeur
+			noeud.valeur = valeur_minmax
+			return valeur_minmax
 
 
 
