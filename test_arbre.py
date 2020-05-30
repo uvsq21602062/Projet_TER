@@ -12,9 +12,9 @@ p = plateau.Plateau(14)
 
 a = arbre.Arbre(1, j1, j2, p, 0)
 
-a.nouvel_etage()
+#a.nouvel_etage()
 
-a.nouvel_etage()
+#a.nouvel_etage()
 
 a.numero_tour += 1
 
@@ -22,6 +22,11 @@ a.numero_tour += 1
 
 #a.nouvel_etage()
 
-print(a.minmax())
+#print(a.minmax(4, 0))
+
+valeur = a.evaluation_arbre(5, 0)
 
 a.afficher()
+
+
+print(valeur)
