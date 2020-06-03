@@ -110,7 +110,10 @@ class Plateau:
 		for i in range(self.largeur):
 			print("|", end='')
 			for j in range(self.largeur):
-				print(" {} ".format(self.cases[j][self.largeur-1 - i]), end='|')
+				if self.cases[j][self.largeur-1 - i] == "ROUGE":
+					print(" {}".format(self.cases[j][self.largeur-1 - i]), end='|')
+				else:
+					print(" {} ".format(self.cases[j][self.largeur-1 - i]), end='|')
 			print()
 		print()
 

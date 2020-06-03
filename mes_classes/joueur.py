@@ -1,4 +1,3 @@
-from . import IA
 
 class Joueur:
 	"""Classe gerrant les informations et les interactions d'un joueur, elle a comme attribut :
@@ -28,51 +27,39 @@ class Joueur:
 					self.pieces = pieces
 					self.derniere_piece_jouee = self.pieces[1]
 					self.type_joueur = type_joueur
-					if self.type_joueur == "MACHINE":
-						self.ia = IA.IA(self)
 
 
 	def choix_piece(self):
 		"""Choisi la piece à jouer."""
-		if self.type_joueur == "MACHINE":
-			return self.ia.choix_piece()
-		else:
-			print("Veuillez entrer le numero de la piece ou (q) pour quitter : ")
-			return input()
+
+		print("Veuillez entrer le numero de la piece ou (q) pour quitter : ")
+		return input()
 
 
 
 	def choix_rotation(self):
 		"""Choisi d'effectuer une rotation ou non"""
 
-		if self.type_joueur == "MACHINE":
-			return self.ia.choix_rotation()
-		else:
-			print("Pour effectuer une rotation sur la pièce entrez (r).\nEntrez (f) quand vous avez fini.")
-			return input()
+		print("Pour effectuer une rotation sur la pièce entrez (r).\nEntrez (f) quand vous avez fini.")
+		return input()
 
 
 	def choix_position_x(self):
 		"""Choisi la position en x de la piece sur le plateau"""
 
-		if self.type_joueur == "MACHINE":
-			return self.ia.choix_position_x()
-		else:
-			print("Veuillez entrer la position en x du plateau ou (q) pour quitter : ")
-			return input()
+		print("Veuillez entrer la position en x du plateau ou (q) pour quitter : ")
+		return input()
 
 
 	def choix_position_y(self):
 		"""Choisi la position en y de la piece sur le plateau"""
 
-		if self.type_joueur == "MACHINE":
-			return self.ia.choix_position_y()
-		else:
-			print("Veuillez entrer la position en y du plateau ou (q) pour quitter : ")
-			return input()
+		print("Veuillez entrer la position en y du plateau ou (q) pour quitter : ")
+		return input()
 
 	def afficher(self):
 		"""Méthode affichant la couleur du joueur et ces pieces"""
+		
 		for i in range(len(self.pieces)):
 			self.pieces[i].afficher()
 

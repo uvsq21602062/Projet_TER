@@ -36,18 +36,16 @@ class Arbre:
 	- un noeud père
 	- la couleur du noeud pere"""
 
-	def __init__(self, hauteur, joueur, joueur_adverse, plateau, numero_tour):
+	def __init__(self, joueur, joueur_adverse, plateau, type_evaluation, nbre_pieces_a_tester, nbre_cases_a_tester):
 		"""Constructeur définissant les attributs"""
 
-		self.hauteur = hauteur
-		self.noeud_racine = Noeud(joueur_adverse.couleur, None, None, 0, 0, 0)
+		self.noeud_racine = Noeud(joueur_adverse.couleur, None, None, None, None, None)
 		self.joueur = joueur
 		self.joueur_adverse = joueur_adverse
 		self.plateau = plateau
-		self.numero_tour = numero_tour
-		self.nbre_pieces_a_tester = 5
-		self.nbre_cases_a_tester = 15
-
+		self.type_evaluation = type_evaluation
+		self.nbre_pieces_a_tester = nbre_pieces_a_tester
+		self.nbre_cases_a_tester = nbre_cases_a_tester
 
 
 
@@ -89,11 +87,23 @@ class Arbre:
 			return noeud.valeur
 		
 		# Sinon on fait une recherche des coups possibles sur le noeud tout en appliquant minmax et alphabeta.
-		#self.recherche_coups_possibles_probabiliste(noeud, plateau_bis, joueur_suivant, numero_tour//2)
-		
-		# Sinon on fait une recherche des coups possibles sur le noeud tout en appliquant minmax et alphabeta.
-		noeud.valeur = self.recherche_probabiliste_minmax_alphabeta(profondeur, numero_tour, noeud,\
-			plateau_bis, joueur_actuel, joueur_suivant, alpha, beta)
+		if self.type_evaluation == "DETERMINISTE":
+			noeud.valeur = self.recherche_deterministe_minmax_alphabeta(profondeur, numero_tour, noeud,\
+				plateau_bis, joueur_actuel, joueur_suivant, alpha, beta)
+		else:
+			noeud.valeur = self.recherche_probabiliste_minmax_alphabeta(profondeur, numero_tour, noeud,\
+				plateau_bis, joueur_actuel, joueur_suivant, alpha, beta)
+
+		# Cette dernière condition permet de mettre au noeud racine le coup à jouer
+		if noeud is self.noeud_racine:
+			for i in range(len(noeud.noeuds_fils)):
+				if noeud.noeuds_fils[i].valeur == noeud.valeur:
+					noeud.indice_piece = noeud.noeuds_fils[i].indice_piece
+					noeud.rotation = noeud.noeuds_fils[i].rotation
+					noeud.x = noeud.noeuds_fils[i].x
+					noeud.y = noeud.noeuds_fils[i].y
+					return noeud.valeur
+
 		return noeud.valeur
 		
 
@@ -103,7 +113,7 @@ class Arbre:
 		joueur_suivant, alpha, beta):
 		"""Cette méthode fait une recherche des coups possibles et 
 		applique la méthode minmax et alphabeta sur les noeuds recherchés.
-		Ainsi la recherche n'a pas besoin d'être couplete graceà l'élagage.
+		Ainsi la recherche n'a pas besoin d'être couplete grace à l'élagage.
 		Elle est appelé par la méthode minmax et appelle la méthode minmax.
 		L'interet de cette méthode est d'alléger l'écriture de minmax."""
 
@@ -124,7 +134,7 @@ class Arbre:
 						x = randint(0, plateau.largeur-1)
 						y = randint(0, plateau.largeur-1)
 						# Si ce coup respecte les regles, alors on créer un nouveau noeud
-						if regles.respect_regle(plateau, piece_bis, x, y, numero_tour//2, 0) == 0:
+						if regles.respect_regle(plateau, piece_bis, x, y, numero_tour, 0) == 0:
 							noeud.noeuds_fils.append(Noeud(joueur_suivant.couleur, noeud, indice_piece, j, x, y))
 
 							# On lance l'appel récursif pour evaluer ce noeud fils
@@ -155,7 +165,7 @@ class Arbre:
 						x = randint(0, plateau.largeur-1)
 						y = randint(0, plateau.largeur-1)
 						# Si ce coup respecte les regles, alors on créer un nouveau noeud
-						if regles.respect_regle(plateau, piece_bis, x, y, numero_tour//2, 0) == 0:
+						if regles.respect_regle(plateau, piece_bis, x, y, numero_tour, 0) == 0:
 							noeud.noeuds_fils.append(Noeud(joueur_suivant.couleur, noeud, indice_piece, j, x, y))
 							
 							valeur = self.evaluation_arbre(profondeur-1, numero_tour+1, noeud.noeuds_fils[-1], plateau,\
@@ -177,7 +187,7 @@ class Arbre:
 		joueur_suivant, alpha, beta):
 		"""Cette méthode fait une recherche des coups possibles et 
 		applique la méthode minmax et alphabeta sur les noeuds recherchés.
-		Ainsi la recherche n'a pas besoin d'être couplete graceà l'élagage.
+		Ainsi la recherche n'a pas besoin d'être complété grace à l'élagage.
 		Elle est appelé par la méthode minmax et appelle la méthode minmax.
 		L'interet de cette méthode est d'alléger l'écriture de minmax."""
 
@@ -186,8 +196,8 @@ class Arbre:
 		if noeud.couleur == self.joueur.couleur or noeud is self.noeud_racine:
 			valeur_minmax = -1000
 			# Debut de la boucle de recherche
-			# Pour toutes les pices du joueur
-			for i in range(len(joueur_suivant.pieces)-1):
+			# Pour toutes les pieces du joueur
+			for i in range(len(joueur_suivant.pieces)):
 				# On fait une copie pour pouvoir effectuer une rotation dessus sans modifier directement la piece
 				piece_bis = copy.deepcopy(joueur_suivant.pieces[i])
 				# Pour chaque rotation de la piece
@@ -196,7 +206,7 @@ class Arbre:
 					for k in range(plateau.largeur):
 						for l in range(plateau.largeur):
 							# Si ce coup respecte les regles, alors on créer un nouveau noeud
-							if regles.respect_regle(plateau, piece_bis, k, l, numero_tour//2, 0) == 0:
+							if regles.respect_regle(plateau, piece_bis, k, l, numero_tour, 0) == 0:
 								noeud.noeuds_fils.append(Noeud(joueur_suivant.couleur, noeud, i, j, k, l))
 
 								# On lance l'appel récursif pour evaluer ce noeud fils
@@ -225,7 +235,7 @@ class Arbre:
 					for k in range(plateau.largeur):
 						for l in range(plateau.largeur):
 							# Si ce coup respecte les regles, alors on créer un nouveau noeud
-							if regles.respect_regle(plateau, piece_bis, k, l, numero_tour//2, 0) == 0:
+							if regles.respect_regle(plateau, piece_bis, k, l, numero_tour, 0) == 0:
 								noeud.noeuds_fils.append(Noeud(joueur_suivant.couleur, noeud, i, j, k, l))
 							
 								valeur = self.evaluation_arbre(profondeur-1, numero_tour+1, noeud.noeuds_fils[-1], plateau,\
@@ -241,6 +251,7 @@ class Arbre:
 					piece_bis.rotation()
 
 		return valeur_minmax
+
 
 
 

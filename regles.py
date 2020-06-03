@@ -20,7 +20,7 @@ def respect_regle(plateau, piece, x, y, numero_tour, verbose):
 	respecte bien les règles et qu'il est possible de la placer.
 	Elle renvoit le numero de l'erreur qui s'est produite ou 0 si il n'y a pas eu d'erreur."""
 	
-	if numero_tour == 0:
+	if numero_tour//2 == 0:
 		if plateau.piece_point_depart(piece, x, y):
 			return 0
 		else:
@@ -116,9 +116,11 @@ def tour(plateau, joueur, numero_tour):
 		- Demande la position en y
 		- Pose de la pièce si le informations sont cohérentes."""
 	
+
 	entree = ""
 	# Demande de la piece
 	while entree != 'q' and entree != "reussite":
+
 		entree = joueur.choix_piece()
 		indice_piece = validation_entree(entree, len(joueur.pieces)-1)
 		if indice_piece != -1 and indice_piece != 'q':
@@ -148,3 +150,22 @@ def tour(plateau, joueur, numero_tour):
 								entree = "retry"
 
 	return entree
+
+def tour_machine(plateau, joueur, joueur_adverse, numero_tour):
+	"""Cette fonction déroule un tour pour la machine"""
+
+	coup_trouve = 0
+	# Tant que la machine n'a pas trouvé de coup à jouer, on fait évaluer le coup à la machine.
+	while coup_trouve == 0:
+		joueur.evaluation_coup(plateau, joueur_adverse, numero_tour)
+		if joueur.indice_piece is not None:
+			coup_trouve = 1
+	# On lui jouer le coup qu'il a trouver : 
+	for i in range(joueur.rotation):
+		joueur.pieces[joueur.indice_piece].rotation()
+	plateau.pose_piece(joueur.pieces[joueur.indice_piece], joueur.x, joueur.y)
+	joueur.derniere_piece_jouee = joueur.pieces[joueur.indice_piece]
+	del joueur.pieces[joueur.indice_piece]
+	# On augmenter le nombre de case à tester et le nombre de pieces à tester à chaque fois qu'il joue
+	joueur.nbr_pieces_tester += 1
+	joueur.nbr_cases_tester += 1

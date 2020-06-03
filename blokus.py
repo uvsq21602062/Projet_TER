@@ -22,8 +22,13 @@ def jeu_sans_ihm(joueur_rouge, joueur_bleu, plateau_jeu):
 		# Au joueur rouge de jouer
 		if joueur_rouge_peut_jouer:
 			print("Au joueur rouge de jouer !")
-			ret = regles.tour(plateau_jeu, joueur_rouge, numero_tour)
+			if joueur_rouge.type_joueur == "HUMAIN":
+				ret = regles.tour(plateau_jeu, joueur_rouge, numero_tour)
+			else:
+				regles.tour_machine(plateau_jeu, joueur_rouge, joueur_bleu, numero_tour)
 			plateau_jeu.afficher()
+
+		numero_tour += 1
 
 		# On verifie que le joueur rouge peut jouer
 		if not regles.joueur_peut_jouer(plateau_jeu, joueur_bleu, numero_tour):
@@ -31,11 +36,13 @@ def jeu_sans_ihm(joueur_rouge, joueur_bleu, plateau_jeu):
 		# Au joueur bleu de jouer
 		if  joueur_bleu_peut_jouer and ret != 'q':
 			print("Au joueur bleu de jouer !")
-			ret = regles.tour(plateau_jeu, joueur_bleu, numero_tour)
+			if joueur_rouge.type_joueur == "HUMAIN":
+				ret = regles.tour(plateau_jeu, joueur_bleu, numero_tour)
+			else:
+				regles.tour_machine(plateau_jeu, joueur_bleu, joueur_rouge, numero_tour)
 			plateau_jeu.afficher()
 
-		# On augmente le numero du tour;
-		numero_tour = numero_tour + 1
+		numero_tour += 1
 
 	regles.fin_partie(joueur_rouge, joueur_bleu)
 
@@ -64,12 +71,12 @@ def choix_jeu():
 
 	# Joueur rouge :
 	if type_joueur_rouge == 'm':
-		joueur_rouge = joueur.Joueur(definition_des_pieces.pieces_rouge, "ROUGE", "MACHINE")
+		joueur_rouge = IA.IA(definition_des_pieces.pieces_rouge, "ROUGE", "MACHINE", "PROBABILISTE", 4, 5, 20)
 	else: 
 		joueur_rouge = joueur.Joueur(definition_des_pieces.pieces_rouge, "ROUGE", "HUMAIN")
 	# Joueur bleu :
 	if type_joueur_bleu == 'm':
-		joueur_bleu = joueur.Joueur(definition_des_pieces.pieces_bleu, "BLEU", "MACHINE")
+		joueur_bleu = IA.IA(definition_des_pieces.pieces_bleu, "BLEU", "MACHINE", "PROBABILISTE", 1, 5, 15)
 	else: 
 		joueur_bleu = joueur.Joueur(definition_des_pieces.pieces_bleu, "BLEU", "HUMAIN")
 	# Plateau :

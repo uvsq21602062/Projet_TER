@@ -1,5 +1,6 @@
 from tkinter import *
 from functools import partial
+from mes_classes import arbre
 import regles
 
 class Interface(Tk):
@@ -42,6 +43,9 @@ class Interface(Tk):
 		self.affiche_plateau()
 		self.affiche_message(0)
 		self.affiche_selection_piece()
+
+		if(self.joueur_actuel.type_joueur == "MACHINE"):
+			self.tour_machine()
 
 		self.liaison_des_actions()
 
@@ -259,7 +263,7 @@ class Interface(Tk):
 
 		self.etat = 1
 		# On test si la piece sur le plateau respecte les regles.
-		erreur = regles.respect_regle(self.plateau, self.joueur_actuel.pieces[self.indice_piece_actuelle], self.piece_x, self.piece_y, self.numero_tour//2, 0)
+		erreur = regles.respect_regle(self.plateau, self.joueur_actuel.pieces[self.indice_piece_actuelle], self.piece_x, self.piece_y, self.numero_tour, 0)
 		# S'il n'y a pas d'erreur
 		if erreur == 0:
 			# On pose la piece sur le plateau et on definit la derniere piece que le joueur a jouer
@@ -271,13 +275,20 @@ class Interface(Tk):
 			self.numero_tour += 1
 			# Les prochaines vérifications sont pour vérifier que un des deux joueurs peuvent jouer
 			# et donc que ce n'est pas la fin de la partie. 
-			if regles.joueur_peut_jouer(self.plateau, self.joueur_suivant, self.numero_tour//2):
+			if regles.joueur_peut_jouer(self.plateau, self.joueur_suivant, self.numero_tour):
 				self.joueur_actuel, self.joueur_suivant = self.joueur_suivant, self.joueur_actuel
-			elif regles.joueur_peut_jouer(self.plateau, self.joueur_actuel, self.numero_tour//2) == 0:
+			elif regles.joueur_peut_jouer(self.plateau, self.joueur_actuel, self.numero_tour) == 0:
 				# Si aucun des deux joueurs ne peut jouer, c'est la fin de la partie.
-				self.resultat =  regles.fin_partie(self.joueur_actuel, self.joueur_suivant)
-				self.etat = 3
+				if self.joueur_actuel.couleur == "ROUGE":
+					self.resultat =  regles.fin_partie(self.joueur_actuel, self.joueur_suivant)
+				else:
+					self.resultat =  regles.fin_partie(self.joueur_suivant, self.joueur_actuel)
+					self.etat = 3
 		
+		# Dernière vérification pour le cas où un des joueurs serait en mode MACHINE
+		if self.joueur_actuel.type_joueur == "MACHINE":
+			self.tour_machine()
+
 		self.piece_x = 0
 		self.piece_y = 0
 		self.canvas.delete("all")
@@ -310,3 +321,33 @@ class Interface(Tk):
 			self.bind("<Left>", self.event_piece_deplace_gauche)
 			self.bind("<Right>", self.event_piece_deplace_droite)
 			self.bind("<Return>", self.event_piece_pose)
+
+
+	def tour_machine(self):
+		"""Cette méthode permet de récupérer ce que la machine désir faire."""
+
+		regles.tour_machine(self.plateau, self.joueur_actuel, self.joueur_suivant, self.numero_tour)
+		self.indice_piece_actuelle = 0
+		self.numero_tour += 1
+		self.canvas.delete("all")
+		self.affiche_plateau()
+
+		# Les prochaines vérifications sont pour vérifier que un des deux joueurs peuvent jouer
+		# et donc que ce n'est pas la fin de la partie. 
+		if regles.joueur_peut_jouer(self.plateau, self.joueur_suivant, self.numero_tour):
+			self.joueur_actuel, self.joueur_suivant = self.joueur_suivant, self.joueur_actuel
+		elif regles.joueur_peut_jouer(self.plateau, self.joueur_actuel, self.numero_tour) == 0:
+			# Si aucun des deux joueurs ne peut jouer, c'est la fin de la partie.
+			if self.joueur_actuel.couleur == "ROUGE":
+				self.resultat =  regles.fin_partie(self.joueur_actuel, self.joueur_suivant)
+			else:
+				self.resultat =  regles.fin_partie(self.joueur_suivant, self.joueur_actuel)
+			self.etat = 3
+			self.canvas.delete("all")
+			self.affiche_plateau()
+			self.affiche_selection_piece()
+			self.liaison_des_actions()
+
+		if self.joueur_actuel.type_joueur == "MACHINE" and self.etat != 3:
+			self.tour_machine()
+
