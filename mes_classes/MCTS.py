@@ -1,3 +1,4 @@
+
 from random import *
 import copy
 import random
@@ -43,11 +44,8 @@ class Node():
 
 def ConstruirArbre(nb_essaye,root):					# a chaque tour du jeu, on verifie "nb_essaye" choix possibles, et pour chacun on verifie jusqu'a la fin du jeu
 	for iter in range(int(nb_essaye)):
-		
 		head=Selection(root)
-
 		value=Simulation(head)
-
 		BackPropagation(head,value)
 	
 	return MeilleurChoix(root,0)
@@ -104,20 +102,4 @@ def BackPropagation(node,value):
 		node.value+=value
 		node=node.parent
 	return
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
