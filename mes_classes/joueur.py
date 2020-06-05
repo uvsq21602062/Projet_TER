@@ -58,7 +58,7 @@ class Joueur:
 		return input()
 
 	def afficher(self):
-		"""Méthode affichant la couleur du joueur et ces pieces"""
+		"""Méthode affichant la couleur du joueur et ses pieces"""
 		
 		for i in range(len(self.pieces)):
 			self.pieces[i].afficher()
