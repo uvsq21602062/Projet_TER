@@ -71,12 +71,12 @@ def choix_jeu():
 
 	# Joueur rouge :
 	if type_joueur_rouge == 'm':
-		joueur_rouge = IA.IA(definition_des_pieces.pieces_rouge, "ROUGE", "MACHINE", "PROBABILISTE", 5, 5, 15)
+		joueur_rouge = IA.IA(definition_des_pieces.pieces_rouge, "ROUGE", "MACHINE", "PROBABILISTE", 5, 6, 16)
 	else: 
 		joueur_rouge = joueur.Joueur(definition_des_pieces.pieces_rouge, "ROUGE", "HUMAIN")
 	# Joueur bleu :
 	if type_joueur_bleu == 'm':
-		joueur_bleu = IA.IA(definition_des_pieces.pieces_bleu, "BLEU", "MACHINE", "DETERMINISTE", 1, 5, 15)
+		joueur_bleu = IA.IA(definition_des_pieces.pieces_bleu, "BLEU", "MACHINE", "PROBABILISTE", 5, 6, 16)
 	else: 
 		joueur_bleu = joueur.Joueur(definition_des_pieces.pieces_bleu, "BLEU", "HUMAIN")
 	# Plateau :
