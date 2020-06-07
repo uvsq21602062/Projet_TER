@@ -10,9 +10,9 @@ j2 = joueur.Joueur(definition_des_pieces.pieces_bleu, "BLEU", "HUMAIN")
 
 p = plateau.Plateau(14)
 
-a = arbre.Arbre(j1, j2, p, "PROBABILISTE", 5, 15)
+a = arbre.Arbre(j1, j2, p, "DETERMINISTE", 5, 15)
 
-valeur = a.evaluation_arbre(4, 0)
+valeur = a.evaluation_arbre(2, 0)
 
 a.afficher()
 

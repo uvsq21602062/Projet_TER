@@ -17,6 +17,8 @@ class Plateau:
 			self.largeur = largeur
 			self.pieces = []
 			self.cases = [["VIDE" for j in range(largeur)] for i in range(largeur)]
+			self.mapping_rouge = []
+			self.mapping_bleu = []
 			# On définit en plus les deux points de départ
 			self.cases[4][9] = "DEPART"
 			self.cases[9][4] = "DEPART"
@@ -32,6 +34,7 @@ class Plateau:
 			for j in range(self.pieces[-1].largeur):
 				if self.pieces[-1].forme[i][j] == 1:
 					self.cases[self.pieces[-1].x + i][self.pieces[-1].y + j] = self.pieces[-1].couleur
+					
 
 	def piece_dans_plateau(self, piece, x, y):
 		"""Méthode permettant de vérifier si une pièce ne dépasse pas le plateau."""
@@ -103,6 +106,10 @@ class Plateau:
 					if piece.forme[i][j] == 1 and self.cases[x+i][y+j] == "DEPART":
 						return 1
 				except: pass
+		return 0
+
+
+
 
 	def afficher(self):
 		"""Methode affichant le plateau dans le terminal."""

@@ -61,22 +61,22 @@ def choix_jeu():
 
 	# On demande le type du joueur rouge
 	while type_joueur_rouge != 'm' and type_joueur_rouge != 'h':
-		print("Tapez (m) pour definir le joueur rouge en machine ou (h) sinon.")
+		print("Tapez (m) pour definir le joueur rouge en machine (probabiliste) ou (h) sinon.")
 		type_joueur_rouge = input()
 
 	# On demande le type du joueur bleu
 	while type_joueur_bleu != 'm' and type_joueur_bleu != 'h':
-		print("Tapez (m) pour definir le joueur bleu en machine ou (h) sinon.")
+		print("Tapez (m) pour definir le joueur bleu en machine (deterministe) ou (h) sinon.")
 		type_joueur_bleu = input()
 
 	# Joueur rouge :
 	if type_joueur_rouge == 'm':
-		joueur_rouge = IA.IA(definition_des_pieces.pieces_rouge, "ROUGE", "MACHINE", "PROBABILISTE", 4, 5, 20)
+		joueur_rouge = IA.IA(definition_des_pieces.pieces_rouge, "ROUGE", "MACHINE", "PROBABILISTE", 4, 6, 16)
 	else: 
 		joueur_rouge = joueur.Joueur(definition_des_pieces.pieces_rouge, "ROUGE", "HUMAIN")
 	# Joueur bleu :
 	if type_joueur_bleu == 'm':
-		joueur_bleu = IA.IA(definition_des_pieces.pieces_bleu, "BLEU", "MACHINE", "PROBABILISTE", 1, 5, 15)
+		joueur_bleu = IA.IA(definition_des_pieces.pieces_bleu, "BLEU", "MACHINE", "DETERMINISTE", 1, 6, 16)
 	else: 
 		joueur_bleu = joueur.Joueur(definition_des_pieces.pieces_bleu, "BLEU", "HUMAIN")
 	# Plateau :

@@ -179,7 +179,7 @@ class Arbre:
 								beta = valeur_minmax
 
 					piece_bis.rotation()
-
+					
 		return valeur_minmax
 
 
